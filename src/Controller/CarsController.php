@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/cars')]
 final class CarsController extends AbstractController
@@ -23,11 +24,13 @@ final class CarsController extends AbstractController
     }
 
     #[Route('/new', name: 'app_cars_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, UserInterface $user): Response
     {
         $car = new Cars();
         $form = $this->createForm(CarsType::class, $car);
         $form->handleRequest($request);
+
+        $car->setUser($user);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($car);

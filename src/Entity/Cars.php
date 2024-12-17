@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CarsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use App\Enum\TypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CarsRepository::class)]
@@ -26,6 +27,19 @@ class Cars
      */
     #[ORM\OneToMany(targetEntity: Photos::class, mappedBy: 'car_id')]
     private Collection $photos;
+
+    #[ORM\ManyToOne(inversedBy: 'cars')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Brands $brand = null;
+
+    #[ORM\Column(type: 'string', enumType: TypeEnum::class)]
+    private TypeEnum $typeEnum;
 
     public function __construct()
     {
@@ -87,6 +101,54 @@ class Cars
                 $photo->setCarId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getBrand(): ?Brands
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(?Brands $brand): static
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    public function getType(): TypeEnum
+    {
+        return $this->typeEnum;
+    }
+
+        public function setType(TypeEnum $status): self
+    {
+        $this->typeEnum = $status;
 
         return $this;
     }
