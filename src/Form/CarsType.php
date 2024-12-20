@@ -54,6 +54,9 @@ class CarsType extends AbstractType
                 'choice_label' => 'id',
                 'mapped' => false,
                 'required' => false,
+                'multiple' => true, // Allows selecting multiple groups
+                'expanded' => true,  // Render checkboxes for the user to select multiple groups
+
             ])
             ->add('imageFile', FileType::class, [
                 'label' => 'Auto Image (JPEG/PNG file)',
@@ -70,6 +73,7 @@ class CarsType extends AbstractType
                     ]),
                 ],
             ])
+
             ;
 
     }

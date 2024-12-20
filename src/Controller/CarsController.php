@@ -48,25 +48,9 @@ final class CarsController extends AbstractController
 
 
 
-//
-//        dump($request->request->all());
-//
-//dump($form->get('imageFile')->getData());
-//        dump($request->request->get('imageFile'));
-//        dump($form->isSubmitted()); // Check if the form is being submitted
-//        dump($form->isValid());     // Check if the form passes validation
-//        dump($form->getErrors(true)); // Display validation errors
-//dd();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //dd('form VALID');
-//            dump($form->get('imageFile')->getData());
-//            dump($form->get('imageFile')->all());
-//
-//            $photo->setName('test');
-//            $photo->setCarId($car);
-//
-//            if($car->addPhoto($photo))
+
             // Ensure the image file is unique
             $imageFile = $car->getImageFile();
             if ($imageFile) {
