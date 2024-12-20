@@ -5,41 +5,62 @@ namespace App\Entity;
 use App\Repository\CarsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Enum\TypeEnum;
+use Doctrine\DBAL\Types\Types;
+
+use App\Entity\CarType;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @Vich\Uploadable
+ */
 
 #[ORM\Entity(repositoryClass: CarsRepository::class)]
 class Cars
 {
+    /**
+     * @Vich\UploadableField(mapping="product_image", fileNameProperty="imageName")
+     * @var File|null
+     */
+private ?File $imageFile = null;
+
+private ?string $imageName = null;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $address = null;
+private ?string $address = null;
 
     /**
      * @var Collection<int, Photos>
      */
     #[ORM\OneToMany(targetEntity: Photos::class, mappedBy: 'car_id')]
-    private Collection $photos;
+private Collection $photos;
 
     #[ORM\ManyToOne(inversedBy: 'cars')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+private ?User $user = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $description = null;
+private ?string $description = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Brands $brand = null;
+private ?Brands $brand = null;
 
-    #[ORM\Column(type: 'string', enumType: TypeEnum::class)]
-    private TypeEnum $typeEnum;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+private ?string $price = null;
+
+    #[ORM\ManyToOne(inversedBy: 'cars')]
+    #[ORM\JoinColumn(nullable: false)]
+private ?CarType $type = null;
 
     public function __construct()
     {
@@ -51,17 +72,18 @@ class Cars
         return $this->id;
     }
 
-    public function getName(): ?string
+public
+function getName(): ?string
     {
         return $this->name;
     }
 
     public function setName(string $name): static
-    {
-        $this->name = $name;
+{
+    $this->name = $name;
 
-        return $this;
-    }
+    return $this;
+}
 
     public function getAddress(): ?string
     {
@@ -69,41 +91,41 @@ class Cars
     }
 
     public function setAddress(string $address): static
-    {
-        $this->address = $address;
+{
+    $this->address = $address;
 
-        return $this;
-    }
+    return $this;
+}
 
     /**
      * @return Collection<int, Photos>
      */
     public function getPhotos(): Collection
-    {
-        return $this->photos;
-    }
+{
+    return $this->photos;
+}
 
     public function addPhoto(Photos $photo): static
-    {
-        if (!$this->photos->contains($photo)) {
-            $this->photos->add($photo);
-            $photo->setCarId($this);
-        }
-
-        return $this;
+{
+    if (!$this->photos->contains($photo)) {
+        $this->photos->add($photo);
+        $photo->setCarId($this);
     }
+
+    return $this;
+}
 
     public function removePhoto(Photos $photo): static
-    {
-        if ($this->photos->removeElement($photo)) {
-            // set the owning side to null (unless already changed)
-            if ($photo->getCarId() === $this) {
-                $photo->setCarId(null);
-            }
+{
+    if ($this->photos->removeElement($photo)) {
+        // set the owning side to null (unless already changed)
+        if ($photo->getCarId() === $this) {
+            $photo->setCarId(null);
         }
-
-        return $this;
     }
+
+    return $this;
+}
 
     public function getUser(): ?User
     {
@@ -123,11 +145,11 @@ class Cars
     }
 
     public function setDescription(string $description): static
-    {
-        $this->description = $description;
+{
+    $this->description = $description;
 
-        return $this;
-    }
+    return $this;
+}
 
     public function getBrand(): ?Brands
     {
@@ -141,15 +163,59 @@ class Cars
         return $this;
     }
 
-    public function getType(): TypeEnum
+    public function getType(): ?CarType
     {
-        return $this->typeEnum;
+        return $this->type;
     }
 
-        public function setType(TypeEnum $status): self
-    {
-        $this->typeEnum = $status;
+        public function setType(CarType $status): self
+{
+    $this->type = $status;
 
-        return $this;
+    return $this;
+}
+
+        public function getPrice(): ?string
+        {
+            return $this->price;
+        }
+
+        public function setPrice(?string $price): static
+        {
+            $this->price = $price;
+
+            return $this;
+        }
+
+    public function setImageFile(?File $imageFile): void
+    {
+        $this->imageFile = $imageFile;
+
+        if ($imageFile) {
+            // Update some property to trigger a Doctrine update (e.g., updatedAt)
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageName(?string $imageName): void
+    {
+        $this->imageName = $imageName;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+
+    public function __toString()
+    {
+        return true;
     }
 }
+
+

@@ -19,7 +19,7 @@ class OptionsType extends AbstractType
             ->add('value')
             ->add('car', EntityType::class, [
                 'class' => Cars::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
                 'multiple' => true,
             ])
         ;

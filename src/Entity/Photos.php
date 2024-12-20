@@ -20,7 +20,7 @@ class Photos
     private ?Cars $car_id = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $orderBy = null;
+    private ?int $orderBy = 1;
 
     public function getId(): ?int
     {

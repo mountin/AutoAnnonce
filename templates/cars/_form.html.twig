@@ -1,4 +1,78 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+{{ form_errors(form) }}
+<div class="form-group">
+    {#{{ form_start(form) }}#}
+<form name="cars" method="post" enctype="multipart/form-data">
+    {#{{ form_rest(form) }}#}
+    {{ form_row(form._token) }}
+    <table>
+        <tr>
+            <td>Name: </td>
+            <td> <input name="cars[name]" required="required"> </td>
+        </tr>
+        <tr>
+        <tr>
+            <td>Adress: </td>
+            <td> <input name="cars[address]" required="required"> </td>
+        </tr>
+        <tr>
+            <td>Description: </td>
+            <td> <textarea name="cars[description]" class="custom-textarea" rows="10" required="required"> </textarea> </td>
+        </tr>
+        <tr>
+            <td>Price: </td>
+            <td> <input  type="number" name="cars[price]" pattern="[0-9]+" title="please enter number only" required="required"> </td>
+
+        </tr>
+
+        <tr>
+            <td>Car Type: </td>
+            <td>
+            <div>
+
+                <select id="cars_type" name="cars[type]" class="custom-select" >
+                    <option></option>
+                    {% for type in types %}
+                        <option value="{{ type.id }}">{{ type.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Brand: </td>
+            <td>
+                <select name="cars[brand]"  class="custom-select form-control"  required>
+                    <option></option>
+                    {% for brand in brands %}
+                        <option value="{{ brand.id }}">{{ brand.name }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Options:</td>
+            <td>
+                {% for option in options %}
+                    <label for="opt_{{ option.id }}">{{ option.name }}</label>
+                    <input id="opt_{{ option.id }}" type="checkbox" name="cars[options][]" value="{{ option.id }}">
+                <br/>
+                {% endfor %}
+            </td>
+
+        </tr>
+        <tr>
+            <td>Photo:</td>
+            <td>
+                {#<img src="{{ asset('/uploads/images/' ~ car.imageName) }}" alt="Product Image"><br/>#}
+                {{ form_row(form.imageFile) }}
+                <button class="btn">Upload</button>
+            </td>
+
+        </tr>
+    </table>
+
+    <button class="custom-btn">{{ button_label|default('Save') }}</button>
+
+    </form>
+    {#{{ form_end(form) }}#}
+</div>

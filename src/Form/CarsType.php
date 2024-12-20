@@ -3,14 +3,19 @@
 namespace App\Form;
 
 use App\Entity\Brands;
+use App\Entity\CarType;
 use App\Entity\Cars;
+use App\Entity\Options;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Enum\TypeEnum;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Validator\Constraints\File;
+
 
 class CarsType extends AbstractType
 {
@@ -20,28 +25,53 @@ class CarsType extends AbstractType
             ->add('name')
             ->add('address')
             ->add('description')
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'email',
-            ])
+            ->add('price')
+//            ->add('extraField', TextType::class, [
+//                'mapped' => false
+//            ])
+//            ->add('user', EntityType::class, [
+//                'class' => User::class,
+//                'choice_label' => 'email',
+//                'attr' => [
+//                    'class' => 'custom-select', // Add a CSS class
+//                    'style' => 'width:10%!important'
+//                ]
+//            ])
             ->add('brand', EntityType::class, [
                 'class' => Brands::class,
                 'choice_label' => 'name',
-            ])
-            ->add('type', ChoiceType::class, [
                 'attr' => [
-                    'class' => 'custom-select', // Add a CSS class
-                    'placeholder' => 'Select Type of Vechicle...',
-                    'width' =>'200px',
+                    'class' => 'custom-select',
                     'style' => 'width:10%!important'
+                    ]
+            ])
+            ->add('type', EntityType::class, [
+                'class' => CarType::class,
+                'choice_label' => 'name',
+            ])
+            ->add('options', EntityType::class, [
+                'class' => Options::class,
+                'choice_label' => 'id',
+                'mapped' => false,
+                'required' => false,
+            ])
+            ->add('imageFile', FileType::class, [
+                'label' => 'Auto Image (JPEG/PNG file)',
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '5M',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/gif',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid image (JPEG, PNG, GIF)',
+                    ]),
                 ],
+            ])
+            ;
 
-                'choices' => TypeEnum::cases(),
-                'choice_label' => function (TypeEnum $choice) {
-                    return ucfirst($choice->value);
-                },
-            ]);
-        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -19,6 +19,10 @@
                 <th>Address</th>
                 <td>{{ car.address }}</td>
             </tr>
+            <tr>
+                <th>Photo</th>
+                <td><img src="{{ asset('/uploads/images/' ~ car.imageName) }}" alt="Product Image"><br/>
+            </tr>
         </tbody>
     </table>
 
