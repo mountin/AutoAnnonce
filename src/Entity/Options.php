@@ -100,4 +100,12 @@ class Options
 
         return $this;
     }
+
+
+    public function setCar(?Car $car): self
+    {
+        $this->car = $car;
+
+        return $this;
+    }
 }

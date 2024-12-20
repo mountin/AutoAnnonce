@@ -36,6 +36,7 @@ final class CarsController extends AbstractController
     {
         $car = new Cars();
         $photo = new Photos();
+
         $form = $this->createForm(CarsType::class, $car);
         $form->handleRequest($request);
         $car->setUser($user);
@@ -47,9 +48,9 @@ final class CarsController extends AbstractController
         $options = $entityManager->getRepository(Options::class)->findAll();
 
 
-
-
         if ($form->isSubmitted() && $form->isValid()) {
+            //dd('form VALID');
+
 
             // Ensure the image file is unique
             $imageFile = $car->getImageFile();
@@ -61,8 +62,28 @@ final class CarsController extends AbstractController
                 );
                 $photo->setName($newFilename);
                 $photo->setCarId($car);
-//                $car->setImageFile($newFilename);
             }
+
+            //$options = new Options();
+
+            $optArray = $form->get('options')->getData();
+            if($optArray){
+                foreach($optArray as $opt){
+                    $opt->addCar($car);
+
+                    $entityManager->persist($opt);
+
+
+                }
+
+
+                //ADD ID in options_car
+                //ADD ID in options_car
+                //ADD ID in options_car
+                //ADD ID in options_car
+            }
+
+            dd();
 
             $entityManager->persist($photo);
             $entityManager->persist($car);
