@@ -10,16 +10,25 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
+use App\Repository\CarsRepository;
 
 #[Route('/user')]
 final class UserController extends AbstractController
 {
 
     #[Route('/profile',name: 'app_user_profile', methods: ['GET'])]
-    public function profile(UserRepository $userRepository): Response
+    public function profile(UserRepository $userRepository, UserInterface $user, CarsRepository $carsRepository): Response
     {
-        return $this->render('user/profile.html.twig', [
-            'users' => $userRepository->findAll(),
+//        return $this->render('user/profile.html.twig', [
+//            'users' => $userRepository->findAll(),
+//        ]);
+
+
+        //dd($carsRepository->findBy(['user' => $user->getId()]));
+        return $this->render('user/show.profile.html.twig', [
+            'user' => $user,
+            'cars' => $carsRepository->findBy(['user' => $user->getId()]),
         ]);
     }
 

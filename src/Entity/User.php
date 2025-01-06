@@ -41,6 +41,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Cars::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $cars;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $name = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Phone = null;
+
     public function __construct()
     {
         $this->cars = new ArrayCollection();
@@ -147,6 +153,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $car->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->Phone;
+    }
+
+    public function setPhone(?string $Phone): static
+    {
+        $this->Phone = $Phone;
 
         return $this;
     }

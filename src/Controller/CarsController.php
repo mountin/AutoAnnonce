@@ -51,7 +51,6 @@ final class CarsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             //dd('form VALID');
 
-
             // Ensure the image file is unique
             $imageFile = $car->getImageFile();
             if ($imageFile) {
@@ -72,7 +71,6 @@ final class CarsController extends AbstractController
                     $opt->addCar($car);
 
                     $entityManager->persist($opt);
-
 
                 }
 
@@ -109,8 +107,12 @@ final class CarsController extends AbstractController
     #[Route('/{id}', name: 'app_cars_show', methods: ['GET'])]
     public function show(Cars $car): Response
     {
+
+        //dump($car->getPhotos()); die;
         return $this->render('cars/show.html.twig', [
             'car' => $car,
+            'photo' => $car->getPhotos(),
+
         ]);
     }
 

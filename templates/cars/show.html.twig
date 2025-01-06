@@ -3,32 +3,91 @@
 {% block title %}Cars{% endblock %}
 
 {% block body %}
-    <h1>Cars</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ car.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ car.name }}</td>
-            </tr>
-            <tr>
-                <th>Address</th>
-                <td>{{ car.address }}</td>
-            </tr>
-            <tr>
-                <th>Photo</th>
-                <td><img src="{{ asset('/uploads/images/' ~ car.imageName) }}" alt="Product Image"><br/>
-            </tr>
-        </tbody>
-    </table>
+
+    <div class="container my-4">
+        <h1>Car Details</h1>
+        <!-- Первый ряд -->
+        <div class="row mb-3">
+            <!-- Первая колонка -->
+            <div class="col-md-6">
+                <div class="p-3 border bg-light">
+                    <h3> {{ car.name }} </h3>
+                    <p>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th>Price:</th>
+                            <td><h4 style="color:green">{{ car.price }} €</h4></td>
+                        </tr>
+
+                        <tr>
+                            <th>Mark:</th>
+                            <td>{{ car.brand.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Type Car:</th>
+                            <td>{{ car.type.name }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Address:</th>
+                            <td>{{ car.address }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Вторая колонка -->
+            <div class="col-md-6">
+                <div class="p-3 border bg-light">
+                    <h3>Photos</h3>
+                    <p>
+                     <ul>
+                        {% for item in car.photos %}
+                            <li><img src="{{ asset('/uploads/images/' ~ item.name) }}" alt="Product Image" width="180px"></li>
+                        {% else %}
+                            <li>Photos not found.</li>
+                        {% endfor %}
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Второй ряд -->
+        <div class="row">
+            <!-- Первая колонка -->
+            <div class="col-md-6">
+                <div class="p-3 border bg-light">
+                    <h3>Other Ads this Author</h3>
+                    <p><a href="#">{{ car.user.name }}</a></p>
+                    Email <p>{{ car.user.email }}</p>
+                    Phone <p style="color:darkviolet"> {{ car.user.phone }}</p>
+
+                </div>
+            </div>
+
+            <!-- Вторая колонка -->
+            <div class="col-md-6">
+                <div class="p-3 border bg-light">
+                    <h3>Car Options</h3>
+                    <p>{{ car.description }}</p>
+                    <p>Options.. - ..Value</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 
     <a href="{{ path('app_cars_index') }}">back to list</a>
 
-    <a href="{{ path('app_cars_edit', {'id': car.id}) }}">edit</a>
+    <a href="{{ path('app_cars_edit', {'id': car.id}) }}" class="button">edit</a>
 
     {{ include('cars/_delete_form.html.twig') }}
 {% endblock %}

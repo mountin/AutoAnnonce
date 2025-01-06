@@ -62,4 +62,5 @@ class Brands
 
         return $this;
     }
+
 }

@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+    <h1>User</h1>
+
+    <table class="table">
+        <tbody>
+
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ user.name ? user.name: '-' }} </td>
+            </tr>
+        </tbody>
+    </table>
+
+   Your ADs of  Cars
+    <table class="table">
+    <tbody>
+    {% for car in cars %}
+        <tr>
+
+            <td><a href="{{ path('app_cars_show', {'id': car.id}) }}">{{ car.name }}</a></td>
+            <td>{{ car.brand.name }}</td>
+            <td>{{ car.price }} Euro</td>
+            <td>Active</td>
+            <td>
+                <a href="{{ path('app_cars_show', {'id': car.id}) }}">show</a>
+
+            </td><td>
+                <a href="{{ path('app_cars_delete', {'id': car.id}) }}">Remove</a>
+
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="5">no ADs found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+     <HR>
+
+    <a href="{{ path('app_user_index') }}">back to list</a>
+
+    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+
+
+{% endblock %}
