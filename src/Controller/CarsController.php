@@ -68,6 +68,7 @@ final class CarsController extends AbstractController
             if($optArray){
                 foreach($optArray as $opt){
                     $opt->addCar($car);
+                    $car->addOption($opt);
                     $entityManager->persist($opt);
 
                 }
@@ -79,9 +80,10 @@ final class CarsController extends AbstractController
             }
 
 
-            //dd($car);
+
             $entityManager->persist($photo);
             $entityManager->persist($car);
+
             $entityManager->flush();
 
 
@@ -107,19 +109,8 @@ final class CarsController extends AbstractController
     public function show(Cars $car, EntityManagerInterface $entityManager): Response
     {
 
-        $criteria = [
-            'car_id' => $car->getId()
-        ];
 
-        $opt = new Options();
-        $opt->addCar($car);
-
-        $options = $entityManager->getRepository(Options::class)->findAll();
-
-
-        $options = $entityManager->getRepository(Options::class)->findWhere($criteria);
-
-        //dump($options); die;
+        $options = $car->getOptions();
 
 
         return $this->render('cars/show.html.twig', [

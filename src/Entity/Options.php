@@ -25,7 +25,7 @@ class Options
     /**
      * @var Collection<int, Cars>
      */
-    #[ORM\ManyToMany(targetEntity: Cars::class)]
+    #[ORM\ManyToMany(targetEntity: Cars::class,  inversedBy: 'options')]
     private Collection $car;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -107,5 +107,10 @@ class Options
         $this->car = $car;
 
         return $this;
+    }
+
+    public function getCars(): Collection
+    {
+        return $this->car;
     }
 }

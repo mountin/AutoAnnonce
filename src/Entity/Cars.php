@@ -40,6 +40,8 @@ class Cars
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
+    #[ORM\ManyToMany(targetEntity: Options::class, mappedBy: 'car', fetch: 'EAGER')]
+    private Collection $options;
     /**
      * @var Collection<int, Photos>
      */
@@ -72,6 +74,7 @@ class Cars
     public function __construct()
     {
         $this->photos = new ArrayCollection();
+        $this->options = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -242,5 +245,26 @@ class Cars
         return $this;
     }
 
+
+    public function getOptions(): Collection
+    {
+        return $this->options;
+    }
+    
+        public function addOption(Options $opt): self
+    {
+        if (!$this->options->contains($opt)) {
+            $this->options[] = $opt;
+        }
+    
+        return $this;
+    }
+    
+        public function removeOption(Options $opt): self
+    {
+        $this->options->removeElement($opt);
+    
+        return $this;
+    }
 
 }

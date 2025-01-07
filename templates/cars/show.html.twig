@@ -73,9 +73,14 @@
             <!-- Вторая колонка -->
             <div class="col-md-6">
                 <div class="p-3 border bg-light">
-                    <h3>Car Options</h3>
                     <p>{{ car.description }}</p>
-                    <p>Options.. - ..Value</p>
+                    <h3>Car Options:</h3>
+                    {% for opt in options %}
+                        <p>{{opt.name}}</p>
+                    {% else %}
+                        <p>Options not found.</p>
+                    {% endfor %}
+
 
                 </div>
             </div>
