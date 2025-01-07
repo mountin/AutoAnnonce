@@ -34,7 +34,7 @@ class Cars
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: false)]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
@@ -53,7 +53,7 @@ class Cars
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     private ?Brands $brand = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
@@ -62,6 +62,12 @@ class Cars
     #[ORM\ManyToOne(inversedBy: 'cars')]
     #[ORM\JoinColumn(nullable: false)]
     private ?CarType $type = null;
+
+    #[ORM\Column(length: 100)]
+    private ?string $fuel = null;
+
+    #[ORM\Column]
+    private ?int $year = null;
 
     public function __construct()
     {
@@ -210,6 +216,30 @@ class Cars
     public function getImageName(): ?string
     {
         return $this->imageName;
+    }
+
+    public function getFuel(): ?string
+    {
+        return $this->fuel;
+    }
+
+    public function setFuel(string $fuel): static
+    {
+        $this->fuel = $fuel;
+
+        return $this;
+    }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(int $year): static
+    {
+        $this->year = $year;
+
+        return $this;
     }
 
 

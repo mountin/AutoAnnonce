@@ -26,6 +26,12 @@ class CarsType extends AbstractType
             ->add('address')
             ->add('description')
             ->add('price')
+            ->add('year')
+            ->add('fuel', ChoiceType::class, [
+                'choices' => ['Essence' => 'Essence', 'Diesel'=>'Diesel', 'Gas'=>'Gas'],
+                'placeholder' => 'Choose a fuel',
+                'required' => false,
+            ])
 //            ->add('extraField', TextType::class, [
 //                'mapped' => false
 //            ])

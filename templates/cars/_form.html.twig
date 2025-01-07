@@ -21,9 +21,11 @@
         <tr>
             <td>Price: </td>
             <td> <input  type="number" name="cars[price]" pattern="[0-9]+" title="please enter number only" required="required"> </td>
-
+        </tr>\
+        <tr>
+            <td>Year production: </td>
+            <td> <input  type="number" name="cars[year]" pattern="[0-9]+" min="1980" title="please enter number only" placeholder="Year ex. 2008" required="required"> </td>
         </tr>
-
         <tr>
             <td>Car Type: </td>
             <td>
@@ -46,6 +48,18 @@
                     {% for brand in brands %}
                         <option value="{{ brand.id }}">{{ brand.name }}</option>
                     {% endfor %}
+                </select>
+            </td>
+            <td>Fuel: </td>
+            <td>
+                <select name="cars[fuel]"  class="custom-select form-control"  required>
+                    <option></option>
+
+                        <option value="Essence">Essence</option>
+                        <option value="Diesel">Diesel</option>
+                        <option value="Gas">Gas</option>
+                        <option value="Electro">Electro</option>
+
                 </select>
             </td>
         </tr>

@@ -42,7 +42,6 @@ final class CarsController extends AbstractController
         $car->setUser($user);
 
 
-
         $brands = $entityManager->getRepository(Brands::class)->findAll();
         $carType = $entityManager->getRepository(CarType::class)->findAll();
         $options = $entityManager->getRepository(Options::class)->findAll();
@@ -68,12 +67,10 @@ final class CarsController extends AbstractController
             $optArray = $form->get('options')->getData();
             if($optArray){
                 foreach($optArray as $opt){
-                    $opt->addCar($car);
-
-                    $entityManager->persist($opt);
+                    //$opt->addCar($car);
+                    //$entityManager->persist($opt);
 
                 }
-
 
                 //ADD ID in options_car
                 //ADD ID in options_car
@@ -81,17 +78,19 @@ final class CarsController extends AbstractController
                 //ADD ID in options_car
             }
 
-            dd();
 
+            //dd($car);
             $entityManager->persist($photo);
             $entityManager->persist($car);
             $entityManager->flush();
 
-            //dd('bien');
+
             return $this->redirectToRoute('app_cars_index', [], Response::HTTP_SEE_OTHER);
         }else{
             //dd('form  NOT VALID');
         }
+
+
 
         return $this->render('cars/new.html.twig', [
             'car' => $car,
