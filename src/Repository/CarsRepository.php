@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Cars;
+use App\Entity\Photos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,6 +17,43 @@ class CarsRepository extends ServiceEntityRepository
         parent::__construct($registry, Cars::class);
     }
 
+    public function findBySearchCriteria(array $criteria): array
+    {
+        $qb = $this->createQueryBuilder('c'); // 'p' is the alias for Cars
+
+        if (!empty($criteria['name'])) {
+            $qb->andWhere('c.name LIKE :name')
+                ->setParameter('name', '%' . $criteria['name'] . '%');
+        }
+
+        if (!empty($criteria['from'])) {
+            $qb->andWhere('c.price > :from')
+                ->setParameter('from',   $criteria['from']  );
+        }
+        if (!empty($criteria['till'])) {
+            $qb->andWhere('c.price < :till')
+                ->setParameter('till',   $criteria['till']  );
+        }
+
+        if (!empty($criteria['descr'])) {
+            $qb->andWhere('c.description LIKE :name')
+                ->setParameter('name', '%' . $criteria['descr'] . '%');
+        }
+
+        if (!empty($criteria['brand'])) {
+//            $qb->join('c.brands', 'c') // Assuming a ManyToMany relationship with brands
+            $qb->andWhere('c.brand = :brand')
+                ->setParameter('brand', $criteria['brand']);
+        }
+
+//        $qb->join('c.photos', 'p'); // Assuming a ManyToOne or OneToMany relationship with Category
+        $qb->leftJoin('c.photos', 'p');
+        $qb->addSelect('p.name');
+
+
+        //dd($qb->getQuery()->getSQL());
+        return $qb->getQuery()->getResult();
+    }
     //    /**
     //     * @return Cars[] Returns an array of Cars objects
     //     */

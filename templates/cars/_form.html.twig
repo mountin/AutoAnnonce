@@ -1,8 +1,6 @@
 {{ form_errors(form) }}
 <div class="form-group">
-    {#{{ form_start(form) }}#}
 <form name="cars" method="post" enctype="multipart/form-data">
-    {#{{ form_rest(form) }}#}
     {{ form_row(form._token) }}
     <table>
         <tr>
@@ -54,7 +52,6 @@
             <td>
                 <select name="cars[fuel]"  class="custom-select form-control"  required>
                     <option></option>
-
                         <option value="Essence">Essence</option>
                         <option value="Diesel">Diesel</option>
                         <option value="Gas">Gas</option>
@@ -72,14 +69,11 @@
                 <br/>
                 {% endfor %}
             </td>
-
         </tr>
         <tr>
             <td>Photo:</td>
             <td>
-                {#<img src="{{ asset('/uploads/images/' ~ car.imageName) }}" alt="Product Image"><br/>#}
                 {{ form_row(form.imageFile) }}
-
             </td>
 
         </tr>
@@ -88,5 +82,5 @@
     <button class="custom-btn">{{ button_label|default('Save') }}</button>
 
     </form>
-    {#{{ form_end(form) }}#}
+
 </div>

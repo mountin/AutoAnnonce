@@ -15,6 +15,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use App\Entity\Brands;
 use App\Entity\CarType;
 use App\Entity\Options;
+use App\Form\SearchProductType;
+use App\Repository\ProductRepository;
+
 
 use App\Entity\User;
 
@@ -28,6 +31,40 @@ final class CarsController extends AbstractController
 //        phpinfo();
         return $this->render('cars/index.html.twig', [
             'cars' => $carsRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/search', name: 'app_cars_search', methods: ['GET', 'POST'])]
+    public function search(Request $request, CarsRepository $productRepository, EntityManagerInterface $entityManager): Response
+    {
+
+        $brands = $entityManager->getRepository(Brands::class)->findAll();
+        $carType = $entityManager->getRepository(CarType::class)->findAll();
+        $options = $entityManager->getRepository(Options::class)->findAll();
+
+        // Create the search form
+        $form = $this->createForm(SearchProductType::class);
+        $form->handleRequest($request);
+
+        $products = [];
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Get search data
+            $searchData = $form->getData();
+
+            //dd($searchData);
+
+            // Query the database using custom repository method
+            $products = $productRepository->findBySearchCriteria($searchData);
+//            dd($products);
+        }
+
+        return $this->render('cars/search.html.twig', [
+            'form' => $form->createView(),
+            'products' => $products,
+            'types' => $carType,
+            'brands' => $brands,
+            'options' => $options,
         ]);
     }
 
@@ -48,7 +85,7 @@ final class CarsController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //dd('form VALID');
+
 
             // Ensure the image file is unique
             $imageFile = $car->getImageFile();
@@ -61,8 +98,6 @@ final class CarsController extends AbstractController
                 $photo->setName($newFilename);
                 $photo->setCarId($car);
             }
-
-            //$options = new Options();
 
             $optArray = $form->get('options')->getData();
             if($optArray){

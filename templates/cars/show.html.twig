@@ -44,15 +44,15 @@
             <div class="col-md-6">
                 <div class="p-3 border bg-light">
                     <h3>Photos</h3>
-                    <p>
+
                      <ul>
                         {% for item in car.photos %}
-                            <li><img src="{{ asset('/uploads/images/' ~ item.name) }}" alt="Product Image" width="180px"></li>
+                            <li><img src="{{ asset('/uploads/images/' ~ item.name) }}" alt="Product Image" width="190px"></li>
                         {% else %}
                             <li>Photos not found.</li>
                         {% endfor %}
                         </ul>
-                    </p>
+
                 </div>
             </div>
         </div>
@@ -75,12 +75,13 @@
                 <div class="p-3 border bg-light">
                     <p>{{ car.description }}</p>
                     <h3>Car Options:</h3>
+                    <ul>
                     {% for opt in options %}
-                        <p>{{opt.name}}</p>
+                        <li>{{opt.name}}</li>
                     {% else %}
-                        <p>Options not found.</p>
+                        <li>Options not found.</li>
                     {% endfor %}
-
+                </ul>
 
                 </div>
             </div>

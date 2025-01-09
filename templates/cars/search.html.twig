@@ -1,0 +1,91 @@
+{# templates/cars/search.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}New Cars{% endblock %}
+
+{% block body %}
+<h1>Search Cars</h1>
+
+    <form name="search_product" method="post" enctype="multipart/form-data" class="form-group" style="width: 300px; padding: 20px;">
+        {{ form_row(form._token) }}
+        <div class="form-group">
+            <label for="search_product_name" class="form-check-label">Car Name</label>
+            <input type="text" class="form-control" id="search_product_name" name="search_product[name]" style="width: 200px" placeholder="Enter car name">
+        </div>
+
+        Price:
+        <div class="form-row">
+            <div class="col">
+                <input class="form-control" type="text" id="search_product_from" style="width:100px" name="search_product[from]" placeholder="From price" inputmode="decimal">
+            </div>
+            <div class="col">
+                <input class="form-control" type="text" id="search_product_till" name="search_product[till]" style="width:100px" placeholder="Till price" inputmode="decimal">
+            </div>
+        </div>
+
+        <div class="form-group"><label for="search_product_brand" class="form-check-label">Brand:</label>
+            <select name="search_product[brand]"  class="custom-select form-control" style="width: 300px">
+                <option>Select Brand</option>
+                {% for brand in brands %}
+                    <option value="{{ brand.id }}">{{ brand.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <button type="submit" id="search_product_search" align="center" class="btn btn-primary btn-lg"
+                    name="search_product[search]">Search</button>
+        </div>
+        </form>
+
+
+    <div style="padding: 20px">
+        <h2>Results</h2>
+
+        <ul style="border:1px; border-color: black">
+            {% for carData in products %}
+                {% set car = carData[0] %} {# Access the first element in the nested array (the Car entity) #}
+                {% set imageName = carData['name'] %} {# Access the "name" value #}
+                <li>
+                    <a href="/cars/{{ car.id }}">
+                    <p>{{ car.name }} Year: {{ car.year }} </p>
+                    {% if imageName %}
+                        <p><img src="{{ asset('/uploads/images/' ~ (imageName)?imageName:'No_Image_Available.jpg') }}" alt="{{ car.name }}" width="200"></p>
+
+                    {% else %}
+                        <p><img src="{{ asset('/uploads/images/No_Image_Available.jpg') }}" alt="{{ car.name }}" width="200"></p>
+
+                    {% endif %}
+                    </a>
+                    <p>Address: {{ car.address }}</p>
+                    <p>Fuel: {{ car.fuel }}</p>
+
+                    <p>Price: {{ car.price }} €</p>
+
+                    {% if car.brand %}
+                        <p>Brand: {{ car.brand.name }}</p>
+                    {% endif %}
+
+                    {% if car.type %}
+                        <p>Type: {{ car.type.name }}</p>
+                    {% endif %}
+
+                </li>
+            {% endfor %}
+        </ul>
+
+
+
+
+{#<ul>#}
+    {#{% for product in products %}#}
+        {#{% for pr in product %}#}
+            {#{{ pr.name }}#}
+        {#<li>{{ pr.name }} (Brand: {{ pr.brand.name }})</li>#}
+        {#{% endfor %}#}
+        {#{{ product.name }}#}
+    {#{% else %}#}
+    {#<li>No products found.</li>#}
+    {#{% endfor %}#}
+{#</ul>#}
+    </div>
+{% endblock %}
