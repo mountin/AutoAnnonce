@@ -62,6 +62,7 @@ final class CarsController extends AbstractController
         return $this->render('cars/search.html.twig', [
             'form' => $form->createView(),
             'products' => $products,
+            'count' => count($products),
             'types' => $carType,
             'brands' => $brands,
             'options' => $options,

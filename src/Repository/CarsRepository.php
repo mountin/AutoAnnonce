@@ -40,18 +40,16 @@ class CarsRepository extends ServiceEntityRepository
                 ->setParameter('name', '%' . $criteria['descr'] . '%');
         }
 
-        if (!empty($criteria['brand'])) {
-//            $qb->join('c.brands', 'c') // Assuming a ManyToMany relationship with brands
+        if (!isset($criteria['brand']) && intval($criteria['brand'] > 0)) {
             $qb->andWhere('c.brand = :brand')
                 ->setParameter('brand', $criteria['brand']);
         }
 
-//        $qb->join('c.photos', 'p'); // Assuming a ManyToOne or OneToMany relationship with Category
         $qb->leftJoin('c.photos', 'p');
         $qb->addSelect('p.name');
 
 
-        //dd($qb->getQuery()->getSQL());
+        //dd($qb->getQuery()->getResult());
         return $qb->getQuery()->getResult();
     }
     //    /**
