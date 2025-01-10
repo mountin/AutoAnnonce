@@ -39,20 +39,15 @@
 
     <div style="padding: 20px">
         <h2>Results: {{ count }}</h2>
+    <table border =1 cellpadding="20">
 
-        <ul style="border:1px; border-color: black">
             {% for carData in products %}
+                <tr><td>
+
                 {% set car = carData[0] %} {# Access the first element in the nested array (the Car entity) #}
                 {% set imageName = carData['name'] %} {# Access the "name" value #}
-                <li>
-                    <a href="/cars/{{ car.id }}">
-                    <p>{{ car.name }} (Year: {{ car.year }}) </p>
-                    {% if imageName %}
-                        <p><img src="{{ asset('/uploads/images/' ~ imageName) }}" alt="{{ car.name }}" class="rounded float-start" width="200"></p>
-                    {% else %}
-                        <p><img src="{{ asset('/uploads/images/No_Image_Available.jpg') }}" alt="{{ car.name }}" class="rounded float-start" width="200"></p>
-                    {% endif %}
-                    </a>
+
+                    <a href="/cars/{{ car.id }}"><p>{{ car.name }} (Year: {{ car.year }}) </p></a>
                     <p>Address: {{ car.address }}</p>
                     <p>Fuel: {{ car.fuel }}</p>
 
@@ -66,10 +61,21 @@
                         <p>Type: {{ car.type.name }}</p>
                     {% endif %}
 
-                </li>
-            {% endfor %}
-        </ul>
 
+        </td>
+        <td valign="center">
+            <a href="/cars/{{ car.id }}">
+                {% if imageName %}
+                    1<p><img src="{{ asset('/uploads/images/' ~ imageName) }}" alt="{{ car.name }}" class="rounded float-start" width="200"></p>
+                {% else %}
+                    <p><img src="{{ asset('/uploads/images/No_Image_Available.jpg') }}" alt="{{ car.name }}" class="rounded float-start" width="200"></p>
+                {% endif %}
+            </a>
+        </td></tr>
+            {% endfor %}
+
+
+</table>
 
 
 
