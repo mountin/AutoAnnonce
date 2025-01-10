@@ -5,29 +5,30 @@
     <table>
         <tr>
             <td>Name: </td>
-            <td> <input name="cars[name]" required="required"> </td>
+            <td> <input name="cars[name]" value="{{ car.name }}" required="required"> </td>
         </tr>
         <tr>
         <tr>
             <td>Adress: </td>
-            <td> <input name="cars[address]" required="required"> </td>
+            <td> <input name="cars[address]" required="required" value="{{ car.address }}"></td>
         </tr>
         <tr>
             <td>Description: </td>
-            <td> <textarea name="cars[description]" class="custom-textarea" rows="10" required="required"> </textarea> </td>
+            <td> <textarea name="cars[description]" class="custom-textarea" value="{{ car.description }}" rows="10" required="required"> </textarea> </td>
         </tr>
         <tr>
             <td>Price: </td>
-            <td> <input  type="number" name="cars[price]" pattern="[0-9]+" title="please enter number only" required="required"> </td>
+            <td> <input  type="number" name="cars[price]" pattern="[0-9]+" value="{{ car.price }}" title="please enter number only" required="required"> </td>
         </tr>\
         <tr>
             <td>Year production: </td>
-            <td> <input  type="number" name="cars[year]" pattern="[0-9]+" min="1980" title="please enter number only" placeholder="Year ex. 2008" required="required"> </td>
+            <td> <input  type="number" name="cars[year]" pattern="[0-9]+" min="1980" value="{{ car.year }}" title="please enter number only" placeholder="Year ex. 2008" required="required"> </td>
         </tr>
         <tr>
             <td>Car Type: </td>
             <td>
             <div>
+
 
                 <select id="cars_type" name="cars[type]" class="custom-select" >
                     <option></option>
@@ -44,7 +45,9 @@
                 <select name="cars[brand]"  class="custom-select form-control"  required>
                     <option></option>
                     {% for brand in brands %}
-                        <option value="{{ brand.id }}">{{ brand.name }}</option>
+
+                        <option value="{{ brand.id }}" >{{ brand.name }}</option>
+
                     {% endfor %}
                 </select>
             </td>
@@ -79,7 +82,7 @@
         </tr>
     </table>
 
-    <button class="custom-btn">{{ button_label|default('Save') }}</button>
+    <button class="btn btn-primary btn-lg">{{ button_label|default('Save') }}</button>
 
     </form>
 

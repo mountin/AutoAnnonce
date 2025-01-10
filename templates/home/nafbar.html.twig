@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand" href="#">Auto Annonce</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -7,21 +7,28 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="{{ path('app_user_profile') }}">Home <span class="sr-only">(current)</span> </a>
+                <a class="nav-link" href="{{ path('app_cars_search') }}">Home <span class="sr-only">(current)</span> </a>
             </li>
+            {% if is_granted('IS_AUTHENTICATED') %}
+                <a class="nav-link" href="{{ path('app_user_profile') }}">My Profile </a>
+            {% endif %}
+            {% if is_granted("ROLE_ADMIN") %}
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_brands_index') }}">My brands</a>
+                <a class="nav-link" href="{{ path('app_brands_index') }}">Brands</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('app_options_index') }}">Options</a>
             </li>
+            {% endif %}
+            {% if is_granted('IS_AUTHENTICATED') %}
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_cars_index') }}">Annonses (My cars)</a>
+                <a class="nav-link" href="{{ path('app_cars_ownindex') }}">Annonses (My cars)</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
+                <a class="nav-link" href="{{ path('app_cars_new') }}"><b>ADD a new Car</b></a>
             </li>
+            {% endif %}
         </ul>
          <ul class="navbar-nav mr-auto">
             <li class="nav-item">
@@ -31,15 +38,15 @@
                 <a class="nav-link" href="{{ path('app_login') }}" class="nav-link">Login</a>
                 {% endif %}
                 {% if is_granted("ROLE_ADMIN") %}
-                    <b>Hi {{ app.user.username }}! You are Admin</b>
+                    <b>Hi {{ app.user.name }}! You are Admin</b>
                 {% else %}
-                    <b>ROLE_ADMIN is not granted to the current user.</b>
+                    <b>You are not logged.</b>
                 {% endif %}
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <a href="/cars/search"><button class="btn btn-outline-success my-2 my-sm-0"  type="submit">Search</button></a>
         </form>
     </div>
 </nav>

@@ -17,6 +17,7 @@ use App\Entity\CarType;
 use App\Entity\Options;
 use App\Form\SearchProductType;
 use App\Repository\ProductRepository;
+use App\Security\Voter\CarsVoter;
 
 
 use App\Entity\User;
@@ -28,16 +29,25 @@ final class CarsController extends AbstractController
     #[Route(name: 'app_cars_index', methods: ['GET'])]
     public function index(CarsRepository $carsRepository): Response
     {
-//        phpinfo();
+
         return $this->render('cars/index.html.twig', [
             'cars' => $carsRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/owncars', name: 'app_cars_ownindex', methods: ['GET'])]
+    public function ownindex(CarsRepository $carsRepository, UserInterface $user): Response
+    {
+
+
+        return $this->render('cars/index.html.twig', [
+            'cars' => $carsRepository->findBy(['user' => $user->getId()]),
         ]);
     }
 
     #[Route('/search', name: 'app_cars_search', methods: ['GET', 'POST'])]
     public function search(Request $request, CarsRepository $productRepository, EntityManagerInterface $entityManager): Response
     {
-
         $brands = $entityManager->getRepository(Brands::class)->findAll();
         $carType = $entityManager->getRepository(CarType::class)->findAll();
         $options = $entityManager->getRepository(Options::class)->findAll();
@@ -79,7 +89,6 @@ final class CarsController extends AbstractController
         $form->handleRequest($request);
         $car->setUser($user);
 
-
         $brands = $entityManager->getRepository(Brands::class)->findAll();
         $carType = $entityManager->getRepository(CarType::class)->findAll();
         $options = $entityManager->getRepository(Options::class)->findAll();
@@ -116,10 +125,8 @@ final class CarsController extends AbstractController
             }
 
 
-
             $entityManager->persist($photo);
             $entityManager->persist($car);
-
             $entityManager->flush();
 
 
@@ -127,7 +134,6 @@ final class CarsController extends AbstractController
         }else{
             //dd('form  NOT VALID');
         }
-
 
 
         return $this->render('cars/new.html.twig', [
@@ -142,12 +148,15 @@ final class CarsController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_cars_show', methods: ['GET'])]
+//    #[IsGranted(CarsVoter::EDIT, 'cars')]
+    #[IsGranted('POST_VIEW', 'cars', 'Item not found', 404)]
     public function show(Cars $car, EntityManagerInterface $entityManager): Response
     {
 
-
+        // check for "view" access: calls all voters
+//        $this->denyAccessUnlessGranted(CarsVoter::VIEW, $car);
+        //$this->denyAccessUnlessGranted('view', $car);
         $options = $car->getOptions();
-
 
         return $this->render('cars/show.html.twig', [
             'car' => $car,
@@ -158,13 +167,18 @@ final class CarsController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_cars_edit', methods: ['GET', 'POST'])]
+    #[IsGranted(CarsVoter::EDIT, 'car')]
     public function edit(Request $request, Cars $car, EntityManagerInterface $entityManager): Response
     {
+
+
+        $this->denyAccessUnlessGranted(CarsVoter::EDIT, $car);
+
         $form = $this->createForm(CarsType::class, $car);
         $form->handleRequest($request);
         $brands = $entityManager->getRepository(Brands::class)->findAll();
         $carType = $entityManager->getRepository(CarType::class)->findAll();
-
+        $options = $car->getOptions();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
@@ -177,12 +191,16 @@ final class CarsController extends AbstractController
             'types' => $carType,
             'brands' => $brands,
             'form' => $form,
+            'options' => $options,
         ]);
     }
 
     #[Route('/{id}', name: 'app_cars_delete', methods: ['POST'])]
+//    #[IsGranted(CarsVoter::EDIT, 'cars')]
     public function delete(Request $request, Cars $car, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted(CarsVoter::EDIT, $car);
+
         if ($this->isCsrfTokenValid('delete'.$car->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($car);
             $entityManager->flush();

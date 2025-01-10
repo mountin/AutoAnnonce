@@ -40,7 +40,7 @@ class CarsRepository extends ServiceEntityRepository
                 ->setParameter('name', '%' . $criteria['descr'] . '%');
         }
 
-        if (!isset($criteria['brand']) && intval($criteria['brand'] > 0)) {
+        if (!empty($criteria['brand'])) {
             $qb->andWhere('c.brand = :brand')
                 ->setParameter('brand', $criteria['brand']);
         }
@@ -49,6 +49,7 @@ class CarsRepository extends ServiceEntityRepository
         $qb->addSelect('p.name');
 
 
+        //dd($qb->getQuery()->getSQL());
         //dd($qb->getQuery()->getResult());
         return $qb->getQuery()->getResult();
     }

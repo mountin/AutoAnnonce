@@ -48,9 +48,9 @@
                     <a href="/cars/{{ car.id }}">
                     <p>{{ car.name }} (Year: {{ car.year }}) </p>
                     {% if imageName %}
-                        <p><img src="{{ asset('/uploads/images/' ~ imageName) }}" alt="{{ car.name }}" width="200"></p>
+                        <p><img src="{{ asset('/uploads/images/' ~ imageName) }}" alt="{{ car.name }}" class="rounded float-start" width="200"></p>
                     {% else %}
-                        <p><img src="{{ asset('/uploads/images/No_Image_Available.jpg') }}" alt="{{ car.name }}" width="200"></p>
+                        <p><img src="{{ asset('/uploads/images/No_Image_Available.jpg') }}" alt="{{ car.name }}" class="rounded float-start" width="200"></p>
                     {% endif %}
                     </a>
                     <p>Address: {{ car.address }}</p>

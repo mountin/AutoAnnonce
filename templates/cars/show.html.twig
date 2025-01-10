@@ -47,7 +47,7 @@
 
                      <ul>
                         {% for item in car.photos %}
-                            <li><img src="{{ asset('/uploads/images/' ~ item.name) }}" alt="Product Image" width="190px"></li>
+                            <li><img src="{{ asset('/uploads/images/' ~ item.name) }}" class="rounded float-start" alt="Product Image" width="190px"></li>
                         {% else %}
                             <li>Photos not found.</li>
                         {% endfor %}
