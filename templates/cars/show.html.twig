@@ -42,14 +42,15 @@
 
             <!-- Вторая колонка -->
             <div class="col-md-6">
-                <div class="p-3 border bg-light">
+                <div class="p-3 border bg-light center" style="">
                     <h3>Photos</h3>
 
                      <ul>
                         {% for item in car.photos %}
                             <li><img src="{{ asset('/uploads/images/' ~ item.name) }}" class="rounded float-start" alt="Product Image" width="190px"></li>
                         {% else %}
-                            <li>Photos not found.</li>
+                            <img src="{{ asset('/uploads/images/No_Image_Available.jpg') }}" class="rounded float-start" alt="Product Image" width="190px">
+                            <br/>
                         {% endfor %}
                         </ul>
 

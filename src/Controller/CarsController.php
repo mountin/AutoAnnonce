@@ -135,7 +135,6 @@ final class CarsController extends AbstractController
             //dd('form  NOT VALID');
         }
 
-
         return $this->render('cars/new.html.twig', [
             'car' => $car,
             'types' => $carType,
@@ -143,7 +142,6 @@ final class CarsController extends AbstractController
             'options' => $options,
             'form' => $form,
         ]);
-
 
     }
 

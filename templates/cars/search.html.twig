@@ -66,7 +66,7 @@
         <td valign="center">
             <a href="/cars/{{ car.id }}">
                 {% if imageName %}
-                    1<p><img src="{{ asset('/uploads/images/' ~ imageName) }}" alt="{{ car.name }}" class="rounded float-start" width="200"></p>
+                    <p><img src="{{ asset('/uploads/images/' ~ imageName) }}" alt="{{ car.name }}" class="rounded float-start" width="200"></p>
                 {% else %}
                     <p><img src="{{ asset('/uploads/images/No_Image_Available.jpg') }}" alt="{{ car.name }}" class="rounded float-start" width="200"></p>
                 {% endif %}
