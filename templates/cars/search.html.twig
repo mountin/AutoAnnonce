@@ -5,11 +5,13 @@
 
 {% block body %}
 <h1>Search Cars</h1>
-    <form name="search_product" method="post" enctype="multipart/form-data" class="form-group" style="width: 300px; padding: 20px;">
+    <form name="search_product" method="post" action="/cars/search?" enctype="multipart/form-data" class="form-group" style="width: 300px; padding: 20px;">
         {{ form_row(form._token) }}
         <div class="form-group">
             <label for="search_product_name" class="form-check-label">Car Name</label>
-            <input type="text" class="form-control" id="search_product_name" name="search_product[name]" style="width: 200px" placeholder="Enter car name">
+            <input type="text" class="form-control" id="search_product_name" name="search_product[name]"
+                   value="{{ sname }}"
+                   style="width: 200px" placeholder="Enter car name">
         </div>
 
         Price:

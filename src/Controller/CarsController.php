@@ -76,6 +76,7 @@ final class CarsController extends AbstractController
             'types' => $carType,
             'brands' => $brands,
             'options' => $options,
+            'sname' => isset($_GET['name'])?$_GET['name']:'',
         ]);
     }
 

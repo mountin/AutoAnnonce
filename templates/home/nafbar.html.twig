@@ -40,13 +40,13 @@
                 {% if is_granted("ROLE_ADMIN") %}
                     <b>Hi {{ app.user.name }}! You are Admin</b>
                 {% else %}
-                    <b>You are not logged.</b>
+                    <b>You are User.</b>
                 {% endif %}
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0" onclick="" action="/cars/search" method="POST">
-            <input class="form-control mr-sm-2" type="search" name="search_product[name]" placeholder="Search" aria-label="Search">
-            <a href="/cars/search"><button class="btn btn-outline-success my-2 my-sm-0"  type="submit">Search</button></a>
+        <form class="form-inline my-2 my-lg-0" onclick="" action="/cars/search" method="GET">
+            <input class="form-control mr-sm-2" type="search" name="name" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0"  type="submit">Search</button>
         </form>
     </div>
 </nav>
